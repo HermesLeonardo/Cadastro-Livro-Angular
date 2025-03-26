@@ -1,0 +1,61 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header class="header">
+      <mat-card-title>Cadastro de Livros</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="formGroup" (ngSubmit)="salvar()">
+
+        <!-- Título -->
+        <mat-form-field class="full-width">
+          <mat-label>Título do Livro</mat-label>
+          <input matInput formControlName="titulo" required>
+          <mat-error *ngIf="formGroup.get('titulo')?.touched && formGroup.get('titulo')?.invalid">
+            {{ errorMessage('titulo') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Categoria -->
+        <mat-form-field class="full-width">
+          <mat-label>Categoria</mat-label>
+          <mat-select formControlName="categoria" required>
+            <mat-option value="Ficção">Ficção</mat-option>
+            <mat-option value="Realismo">Realismo</mat-option>
+            <mat-option value="Biografia">Biografia</mat-option>
+            <mat-option value="Romance">Romance</mat-option>
+            <mat-option value="Terror">Terror</mat-option>
+          </mat-select>
+          <mat-error *ngIf="formGroup.get('categoria')?.touched && formGroup.get('categoria')?.invalid">
+            {{ errorMessage('categoria') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Checkbox -->
+        <mat-checkbox formControlName="disponivel">
+          Disponível para empréstimo?
+        </mat-checkbox>
+
+        <!-- Condição -->
+        <div class="radio-group">
+          <label>Condição do Livro:</label>
+          <mat-radio-group formControlName="condicao">
+            <mat-radio-button value="novo">Novo</mat-radio-button>
+            <mat-radio-button value="usado">Usado</mat-radio-button>
+            <mat-radio-button value="Uma bosta">Uma bosta</mat-radio-button>
+          </mat-radio-group>
+          <mat-error *ngIf="formGroup.get('condicao')?.touched && formGroup.get('condicao')?.invalid">
+            {{ errorMessage('condicao') }}
+          </mat-error>
+        </div>
+
+        <!-- Botões -->
+        <div class="buttons">
+          <button mat-raised-button color="primary" type="submit">Salvar</button>
+          <button mat-raised-button color="warn" routerLink="/listar" type="button">Cancelar</button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

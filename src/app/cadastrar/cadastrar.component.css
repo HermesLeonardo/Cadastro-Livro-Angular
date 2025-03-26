@@ -1,0 +1,48 @@
+.form-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+mat-card {
+  width: 100%;
+  max-width: 1200px; 
+}
+
+.header {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.radio-group {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.buttons button {
+  color: white;
+  font-weight: bold;
+  padding: 6px 20px;
+  border-radius: 4px;
+  min-width: 90px;
+}
+
+.buttons button[color="primary"] {
+  background-color: #3f51b5;
+}
+
+.buttons button[color="warn"] {
+  background-color: #f44336;
+}

@@ -1,0 +1,19 @@
+.custom-toolbar {
+  background-color: #3F51B5;
+  color: white;
+  font-family: 'Roboto', sans-serif; 
+}
+
+.logo {
+  font-weight: 500; 
+  font-size: 20px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+::ng-deep .mat-toolbar button {
+  color: white !important;
+  font-weight: 500;
+}
