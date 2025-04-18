@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LivroService } from '../service/livro.service';
+import { Livro } from '../model/livro.model';
 
 @Component({
   selector: 'app-cadastrar',
@@ -13,7 +15,11 @@ export class CadastrarComponent {
 
   categorias = ['Ficção', 'Realismo', 'Biografia', 'Terror', 'Romance'];
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
+  constructor(
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private livroService: LivroService
+  ) {
     this.formGroup = this.fb.group({
       titulo: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       categoria: ['', Validators.required],
@@ -28,22 +34,18 @@ export class CadastrarComponent {
       return;
     }
 
-    const novoLivro = {
+    const novoLivro: Livro = {
       id: new Date().getTime(),
       ...this.formGroup.value,
       exibirExcluir: false
     };
 
-    console.log('Livro salvo (JSON):', JSON.stringify(novoLivro, null, 2));
-
-    const livrosSalvos = JSON.parse(localStorage.getItem('livros') || '[]');
-    livrosSalvos.push(novoLivro);
-    localStorage.setItem('livros', JSON.stringify(livrosSalvos));
+    this.livroService.salvar(novoLivro);
 
     this.snackBar.open('Livro cadastrado com sucesso!', 'Fechar', { duration: 3000 });
     this.formGroup.reset();
-
     window.dispatchEvent(new Event('livros:atualizar'));
+    window.location.href = '/listar';
   }
 
   private onError() {

@@ -1,18 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LivroService } from '../service/livro.service';
+import { Livro } from '../model/livro.model';
 
 @Component({
   selector: 'app-listar',
   templateUrl: './listar.component.html',
   styleUrls: ['./listar.component.css'],
-  standalone  : false
+  standalone: false
 })
 export class ListarComponent implements OnInit {
   displayedColumns: string[] = ['titulo', 'categoria', 'disponivel', 'condicao', 'acoes'];
+  livros: Livro[] = [];
 
-  livros: any[] = [];
-
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private livroService: LivroService
+  ) {}
 
   ngOnInit(): void {
     this.carregarLivros();
@@ -23,29 +27,26 @@ export class ListarComponent implements OnInit {
   }
 
   carregarLivros() {
-    const livrosSalvos = JSON.parse(localStorage.getItem('livros') || '[]');
-  
-    this.livros = livrosSalvos.map((livro: any) => ({
-      titulo: livro.titulo || livro.nome || 'Sem título',
-      categoria: livro.categoria || 'Desconhecida',
-      disponivel: livro.disponivel ?? false,
-      condicao: livro.condicao || 'Não informada',
-      id: livro.id,
-      exibirExcluir: livro.exibirExcluir ?? false
-    }));
+    this.livroService.listar().subscribe((livros) => {
+      this.livros = livros.map((livro: Livro) => ({
+        ...livro,
+        titulo: livro.titulo || 'Sem título',
+        categoria: livro.categoria || 'Desconhecida',
+        disponivel: livro.disponivel ?? false,
+        condicao: livro.condicao || 'Não informada',
+        exibirExcluir: livro.exibirExcluir ?? false
+      }));
+    });
   }
-  
 
-  excluirLivro(livro: any) {
-    this.livros = this.livros.filter(l => l.id !== livro.id);
-    localStorage.setItem('livros', JSON.stringify(this.livros));
+  excluirLivro(livro: Livro) {
+    this.livroService.excluir(livro.id);
+    this.carregarLivros();
     this.snackBar.open('Livro excluído com sucesso!', 'Fechar', { duration: 2000 });
   }
 
-  toggleExcluir(livro: any) {
+  toggleExcluir(livro: Livro) {
     livro.exibirExcluir = !livro.exibirExcluir;
-    this.livros = [...this.livros];
+    this.livros = [...this.livros]; // Força detecção de mudança
   }
-
-
 }
